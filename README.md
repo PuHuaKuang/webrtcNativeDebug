@@ -1,2 +1,4 @@
-# webrtcNativeDebug
-m75, webrtc native code debug project for android studio, ubuntu18.04
+# webrtc
+vmware ubuntu， for native code debug
+
+transplant from ios demo to vmware ubuntu demo
