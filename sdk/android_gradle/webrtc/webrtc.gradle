@@ -197,18 +197,23 @@ task genWebrtcSrc(type:Exec) {
                     "${py2} base/android/jni_generator/jni_generator.py --input_file sdk/android/src/java/org/webrtc/WrappedNativeI420Buffer.java --ptr_type=long --output_dir ${webrtc_build_dir}/gen/sdk/android/generated_video_jni/jni --includes ../../../../../../../sdk/android/src/jni/jni_generator_helper.h -n \"webrtc::jni\" && " +
                     "${py2} base/android/jni_generator/jni_generator.py --input_file sdk/android/api/org/webrtc/YuvHelper.java --ptr_type=long --output_dir ${webrtc_build_dir}/gen/sdk/android/generated_video_jni/jni --includes ../../../../../../../sdk/android/src/jni/jni_generator_helper.h -n \"webrtc::jni\""
 
-    /*def cmd = ['echo', 'already generated']
+    //def c = ['sh', '-c', "cd /works"]
+    //commandLine c
+
+    def cmd = ['echo', 'already generated']
     if (!buildDirFile.exists()) {
         cmd = ['sh', '-c', "${createBuildDir} && ${genBuildFlags} && ${genProtoSrc} && ${genJni}"]
     }
-    commandLine cmd*/
+    commandLine cmd
 
-
-
+    //println "gradleVersion = $gradle.gradleVersion"
 
 }
 
  afterEvaluate {
     externalNativeBuildDebug.dependsOn(genWebrtcSrc)
     externalNativeBuildRelease.dependsOn(genWebrtcSrc)
+
+     //externalNativeBuildDebug
+     //externalNativeBuildRelease
 }

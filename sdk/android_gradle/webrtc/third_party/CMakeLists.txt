@@ -14,3 +14,5 @@ add_subdirectory(opus)
 add_subdirectory(protobuf)
 add_subdirectory(rnnoise)
 add_subdirectory(usrsctp)
+add_subdirectory(pffft)
+
