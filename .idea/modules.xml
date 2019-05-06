@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/self.iml" filepath="$PROJECT_DIR$/.idea/self.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apprtcmobile.iml" filepath="$PROJECT_DIR$/apprtcmobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libwebrtc/libwebrtc.iml" filepath="$PROJECT_DIR$/libwebrtc/libwebrtc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/self.iml" filepath="$PROJECT_DIR$/self.iml" />
     </modules>
   </component>
 </project>

@@ -1,5 +1,0 @@
-specific_include_rules = {
-  "thread_registry\.cc": [
-    "+sdk/android/native_api/stacktrace/stacktrace.h",
-  ],
-}
