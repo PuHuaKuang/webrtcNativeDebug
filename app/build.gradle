@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+
+def useDefaultJavaCode = "true" == rootProject.findProperty("use_default_java_code")
+def webrtcRepo = rootProject.property("webrtc_repo")
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -11,10 +16,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         sourceSets.main {
-            jniLibs.srcDir 'libs'
-            java.srcDirs = [
-                    "src/main/java",
-            ]
+            if(useDefaultJavaCode)
+            {
+                java.srcDirs = [
+                        "src/main/java",
+                ]
+                jniLibs.srcDir 'libs'
+            }
+            else
+            {
+                java.srcDirs = [
+                        "${webrtcRepo}/examples/androidapp/src"
+                ]
+                //jniLibs.srcDir = '${webrtcRepo}/examples/androidapp/third_party/autobanh/lib'
+                jniLibs.srcDir 'libs'
+                //res.srcDirs "${webrtcRepo}/examples/androidapp/res"
+                //manifest.srcFile "${webrtcRepo}/examples/androidapp/AndroidManifest.xml"
+            }
         }
 
         ndk {
