@@ -17,8 +17,8 @@ android {
                         "-DWEBRTC_REPO=${rootProject.property("webrtc_repo")}",
                         "-DWEBRTC_BUILD_DIR=${rootProject.property("webrtc_build_dir")}"
                 cppFlags '-std=c++14'
-                abiFilters 'arm64-v8a' //, 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
-                //targets "protobuf_lite", "absl_base", "absl_optional", "absl_variant", "yuv", "ssl", "crypto", "event", "json", "srtp", "vpx", "opus", "rnnoise", "usrsctp"
+                //abiFilters 'armeabi-v7a'
+                abiFilters 'arm64-v8a', 'armeabi-v7a'
             }
         }
     }

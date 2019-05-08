@@ -1,9 +1,21 @@
 cmake_minimum_required(VERSION 3.10)
 
+#if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
+#	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=softfp")
+#endif()
+
 set(CWD ${CMAKE_CURRENT_LIST_DIR})
 
 set(TEST_CC_FILTER ".*gunit.cc|.*/mock/.*|.*mock_.*|.*/mocks/.*|.*fake.*|.*/test/.*|.*/tests/.*|.*_test_.*|.*unittest.*|.*/end_to_end_tests/.*|.*_test.cc|.*_tests.cc|.*_integrationtest.cc|.*_perftest.cc|.*test_utils.cc|.*testutils.cc|.*testclient.cc|.*test.c")
-set(OTHER_PLATFORM_CC_FILTER ".*_chromeos.cc|.*_freebsd.cc|.*_fuchsia.cc|.*/fuchsia/.*|.*_ios.cc|.*_ios.mm|.*/ios/.*|.*_mac.cc|.*_mac.mm|.*/mac/.*|.*_openbsd.cc|.*_win.cc|.*/win/.*|.*win32.*|.*/windows/.*|.*sse.cc|.*sse2.cc|.*_mips.cc|.*_mips.c")
+
+
+if (${ANDROID_ABI} STREQUAL "arm64-v8a")
+    	add_definitions(-DWEBRTC_ARCH_ARM64 -DWEBRTC_HAS_NEON)
+	set(OTHER_PLATFORM_CC_FILTER ".*_chromeos.cc|.*_freebsd.cc|.*_fuchsia.cc|.*/fuchsia/.*|.*_ios.cc|.*_ios.mm|.*/ios/.*|.*_mac.cc|.*_mac.mm|.*/mac/.*|.*_openbsd.cc|.*_win.cc|.*/win/.*|.*win32.*|.	*/windows/.*|.*sse.cc|.*sse2.cc|.*_mips.cc|.*_mips.c")
+elseif (${ANDROID_ABI} STREQUAL "armeabi-v7a")
+	add_definitions(-DWEBRTC_ARCH_ARM -DWEBRTC_ARCH_ARM_V7 -DPFFFT_SIMD_DISABLE)
+	set(OTHER_PLATFORM_CC_FILTER ".*_chromeos.cc|.*_freebsd.cc|.*_fuchsia.cc|.*/fuchsia/.*|.*_ios.cc|.*_ios.mm|.*/ios/.*|.*_mac.cc|.*_mac.mm|.*/mac/.*|.*_openbsd.cc|.*_win.cc|.*/win/.*|.*win32.*|.	*/windows/.*|.*sse.cc|.*sse2.cc|.*_mips.cc|.*_mips.c|.*_neon.c")
+endif()
 
 # add at first, avoid header search path, definition chaos
 add_subdirectory(third_party)
@@ -26,11 +38,6 @@ add_definitions(-DWEBRTC_OPUS_VARIABLE_COMPLEXITY=0)
 
 add_definitions(-DNO_TCMALLOC=1)
 
-if (${ANDROID_ABI} STREQUAL "arm64-v8a")
-    add_definitions(-DWEBRTC_ARCH_ARM64 -DWEBRTC_HAS_NEON)
-elseif (${ANDROID_ABI} STREQUAL "armeabi-v7a")
-    add_definitions(-DWEBRTC_ARCH_ARM -DWEBRTC_ARCH_ARM_V7)
-endif()
 
 add_definitions(-DWEBRTC_CODEC_ILBC -DWEBRTC_CODEC_OPUS -DWEBRTC_OPUS_SUPPORT_120MS_PTIME=1 -DWEBRTC_CODEC_ISAC -DWEBRTC_CODEC_RED)
 
@@ -72,6 +79,7 @@ file(GLOB_RECURSE src_audio
     ${WEBRTC_REPO}/audio/*.cc
 )
 list(FILTER src_audio EXCLUDE REGEX ${TEST_CC_FILTER})
+#list(FILTER src_audio EXCLUDE REGEX ${OTHER_PLATFORM_CC_FILTER})
 
 file(GLOB_RECURSE src_call
     ${WEBRTC_REPO}/call/*.cc
@@ -125,10 +133,10 @@ list(FILTER src_modules EXCLUDE REGEX
     ".*/desktop_capture/.|.*/linux/.*|.*include/audio_device_factory.cc|.*bwe_simulations.cc|.*/audio_coding/neteq/tools/.*|.*/remote_bitrate_estimator/tools/.*|.*rnn_vad_tool.cc|.*null_aec_dump_factory.cc|.*h264_color_space.cc|.*vp9_noop.cc|.*h264_decoder_impl.cc|.*h264_encoder_impl.cc|.*/android/aaudio_.*|.*ensure_initialized.cc|.*fixed_gain_controller.cc|.*click_annotate.cc"
 )
 
-file(GLOB_RECURSE src_ortc
-    ${WEBRTC_REPO}/ortc/*.cc
-)
-list(FILTER src_ortc EXCLUDE REGEX ${TEST_CC_FILTER})
+##file(GLOB_RECURSE src_ortc
+##    ${WEBRTC_REPO}/ortc/*.cc
+##)
+##list(FILTER src_ortc EXCLUDE REGEX ${TEST_CC_FILTER})
 
 file(GLOB_RECURSE src_p2p
     ${WEBRTC_REPO}/p2p/*.cc
@@ -189,7 +197,7 @@ add_library(jingle_peerconnection_so SHARED
     ${src_logging}
     ${src_media}
     ${src_modules}
-    ${src_ortc}
+    #${src_ortc}
     ${src_p2p}
     ${src_pc}
     ${src_rtc_base}
